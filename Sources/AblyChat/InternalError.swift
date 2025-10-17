@@ -45,12 +45,13 @@ internal enum InternalError {
     /// Error code is 40003 and status code (TODO spec doesn't say).
     case deleteMessageReactionEmptyMessageSerial
 
-    // Old ones
+    // Old ones: TODO document
 
+    // TODO document
     case inconsistentRoomOptions(requested: RoomOptions, existing: RoomOptions)
-    case roomInFailedState
+    // TODO document, this one is no longer specified because we never finished single-channel stuff
     case roomIsReleasing
-    case roomIsReleased
+    // TODO document
     case roomReleasedBeforeOperationCompleted
     case presenceOperationRequiresRoomAttach(feature: RoomFeature)
     case roomTransitionedToInvalidStateForPresenceOperation(cause: ErrorInfo?)
@@ -58,6 +59,9 @@ internal enum InternalError {
     case unableDeleteReactionWithoutName(reactionType: String)
     case attachSerialIsNotDefined
     case channelFailedToAttach(cause: ErrorInfo?)
+
+    // Irrelevant ones: TODO document
+
 
     /// Returns the error that this should be converted to when exposed via the SDK's public API.
     internal func toErrorInfo() -> ErrorInfo {
