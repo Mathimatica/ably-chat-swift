@@ -156,9 +156,9 @@ internal final class ChatAPI {
 
     // (CHA-MR11) Users should be able to delete a reaction from a message via the `delete` method of the `MessagesReactions` object
     internal func deleteReactionFromMessage(_ messageSerial: String, roomName: String, params: DeleteMessageReactionParams) async throws(ErrorInfo) -> MessageReactionResponse {
-        // (CHA-MR11a1) If the serial passed to this method is invalid: undefined, null, empty string, an error with code 40000 must be thrown.
+        // (CHA-MR11a2) If the serial passed to this method is invalid: undefined, null, empty string, an error with code 40003 must be thrown.
         guard !messageSerial.isEmpty else {
-            throw ChatError.messageReactionInvalidMessageSerial.toErrorInfo()
+            throw InternalError.deleteMessageReactionEmptyMessageSerial.toErrorInfo()
         }
 
         let endpoint = messageUrl(roomName: roomName, serial: messageSerial, suffix: "/reactions")

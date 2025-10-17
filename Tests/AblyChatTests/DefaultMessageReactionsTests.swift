@@ -78,7 +78,7 @@ struct DefaultMessageReactionsTests {
         #expect(thrownError == InternalError.sendMessageReactionEmptyMessageSerial.toErrorInfo())
     }
 
-    // @spec CHA-MR11a1
+    // @spec CHA-MR11a2
     @Test
     func errorShouldBeThrownIfMessageSerialIsEmptyWhenDelete() async throws {
         // Given

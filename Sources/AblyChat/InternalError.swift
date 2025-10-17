@@ -40,6 +40,11 @@ internal enum InternalError {
     /// Error code is 40003 and status code (TODO spec doesn't say).
     case sendMessageReactionEmptyMessageSerial
 
+    /// The user passed an empty `messageSerial` when deleting a reaction, which is not allowed per CHA-MR11a2.
+    ///
+    /// Error code is 40003 and status code (TODO spec doesn't say).
+    case deleteMessageReactionEmptyMessageSerial
+
     // Old ones
 
     case inconsistentRoomOptions(requested: RoomOptions, existing: RoomOptions)
