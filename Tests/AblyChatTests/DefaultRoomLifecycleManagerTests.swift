@@ -301,7 +301,7 @@ struct DefaultRoomLifecycleManagerTests {
         #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomInInvalidState)))
     }
 
-    // @spec CHA-RL2d
+    // @spec CHA-RL2m
     @Test
     func detach_whenFailed() async throws {
         // Given: A DefaultRoomLifecycleManager in the FAILED status
@@ -310,11 +310,11 @@ struct DefaultRoomLifecycleManagerTests {
         )
 
         // When: `performAttachOperation()` is called on the lifecycle manager
-        // Then: It throws a roomInFailedState error
+        // Then: It throws a roomInInvalidState error
         let thrownError = try await #require(throws: ErrorInfo.self) {
             try await manager.performDetachOperation()
         }
-        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomInFailedState)))
+        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomInInvalidState)))
     }
 
     // @spec CHA-RL2i
