@@ -111,11 +111,11 @@ struct DefaultRoomLifecycleManagerTests {
         let manager = createManager(forTestingWhatHappensWhenCurrentlyIn: .released)
 
         // When: `performAttachOperation()` is called on the lifecycle manager
-        // Then: It throws a roomIsReleased error
+        // Then: It throws a roomInInvalidState error
         let thrownError = try await #require(throws: ErrorInfo.self) {
             try await manager.performAttachOperation()
         }
-        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomIsReleased)))
+        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomInInvalidState)))
     }
 
     // @spec CHA-RL1d
@@ -287,18 +287,18 @@ struct DefaultRoomLifecycleManagerTests {
         #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomIsReleasing)))
     }
 
-    // @spec CHA-RL2c
+    // @spec CHA-RL2l
     @Test
     func detach_whenReleased() async throws {
         // Given: A DefaultRoomLifecycleManager in the RELEASED status
         let manager = createManager(forTestingWhatHappensWhenCurrentlyIn: .released)
 
         // When: `performAttachOperation()` is called on the lifecycle manager
-        // Then: It throws a roomIsReleased error
+        // Then: It throws a roomInInvalidState error
         let thrownError = try await #require(throws: ErrorInfo.self) {
             try await manager.performDetachOperation()
         }
-        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomIsReleased)))
+        #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomInInvalidState)))
     }
 
     // @spec CHA-RL2d

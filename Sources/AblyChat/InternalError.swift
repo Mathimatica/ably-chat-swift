@@ -10,8 +10,15 @@ internal enum InternalError {
 
     // New ones
 
-    /// Not proceeding with `Room.attach()` because the room is in the following invalid status, per CHA-RL1l.
-    case roomInInvalidStateForAttach(RoomStatus) // TODO: RoomInInvalidState per CHA-RL1l
+    /// Not proceeding with `Room.attach()` because the room has the following invalid status, per CHA-RL1l.
+    ///
+    /// Error code is `RoomInInvalidState`.
+    case roomInInvalidStateForAttach(RoomStatus)
+
+    /// Not proceeding with `Room.detach()` because the room has the following invalid status, per CHA-RL2l or CHA-RL2m.
+    ///
+    /// Error code is `RoomInInvalidState`.
+    case roomInInvalidStateForDetach(RoomStatus)
 
 
 
