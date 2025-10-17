@@ -431,7 +431,7 @@ struct MessageTests {
             #expect(Bool(false), "Should have thrown an error")
         } catch {
             #expect(error.statusCode == 400)
-            #expect(error.code == 40000)
+            #expect(error.code == 40003)
         }
     }
 }

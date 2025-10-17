@@ -25,10 +25,15 @@ internal enum InternalError {
     /// Error code is 40003 and status code 400.
     case cannotApplyCreatedMessageEvent
 
-    /// Attempted to apply a `MessageEvent` event to a `Message` whose `serial` doesn't match the `messageSerial` of the event, which is not allowed per CHA-M11i.
+    /// Attempted to apply a `MessageEvent` to a `Message` whose `serial` doesn't match the `messageSerial` of the event, which is not allowed per CHA-M11i.
     ///
     /// Error code is 40003 and status code 400.
     case cannotApplyMessageEventForDifferentMessage
+
+    /// Attempted to apply a `MessageReactionSummaryEvent` to a `Message` whose `serial` doesn't match the `messageSerial` of the event, which is not allowed per CHA-M11j.
+    ///
+    /// Error code is 40003 and status code 400.
+    case cannotApplyReactionSummaryEventForDifferentMessage
 
     // Old ones
 
