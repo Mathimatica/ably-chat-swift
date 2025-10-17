@@ -7,6 +7,16 @@ import Ably
 /// This type does not conform to `Error` and cannot be thrown directly. It serves as the backing storage for ``ErrorInfo``, which is the actual error type thrown by the SDK.
 internal enum InternalError {
     case other(Other)
+
+    // New ones
+
+    /// Not proceeding with `Room.attach()` because the room is in the following invalid status, per CHA-RL1l.
+    case roomInInvalidStateForAttach(RoomStatus) // TODO: RoomInInvalidState per CHA-RL1l
+
+
+
+    // Old ones
+
     case inconsistentRoomOptions(requested: RoomOptions, existing: RoomOptions)
     case roomInFailedState
     case roomIsReleasing

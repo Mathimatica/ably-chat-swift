@@ -104,7 +104,7 @@ struct DefaultRoomLifecycleManagerTests {
         #expect(thrownError.hasCodeAndStatusCode(.fixedStatusCode(.roomIsReleasing)))
     }
 
-    // @spec CHA-RL1c
+    // @spec CHA-RL1l
     @Test
     func attach_whenReleased() async throws {
         // Given: A DefaultRoomLifecycleManager in the RELEASED status
