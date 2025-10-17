@@ -75,7 +75,7 @@ struct DefaultMessageReactionsTests {
         }
 
         // Then
-        #expect(thrownError == InternalError.other(.chatAPIChatError(.messageReactionInvalidMessageSerial)).toErrorInfo())
+        #expect(thrownError == InternalError.sendMessageReactionEmptyMessageSerial.toErrorInfo())
     }
 
     // @spec CHA-MR11a1

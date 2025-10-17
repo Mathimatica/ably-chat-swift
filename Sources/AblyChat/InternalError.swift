@@ -35,6 +35,11 @@ internal enum InternalError {
     /// Error code is 40003 and status code 400.
     case cannotApplyReactionSummaryEventForDifferentMessage
 
+    /// The user passed an empty `messageSerial` when sending a reaction, which is not allowed per CHA-MR4a2.
+    ///
+    /// Error code is 40003 and status code (TODO spec doesn't say).
+    case sendMessageReactionEmptyMessageSerial
+
     // Old ones
 
     case inconsistentRoomOptions(requested: RoomOptions, existing: RoomOptions)
