@@ -79,42 +79,22 @@ internal enum InternalError {
         case messagesError(DefaultMessages.MessagesError)
     }
 
-    // TODO check all these once we've done the internal ones
+    // TODO check the derived enums
     /// The ```ErrorInfo/code`` values used by `InternalError` cases.
+    ///
+    /// These values are taken from the "Commmon Error Codes used by Chat" and "Chat-specific Error Codes" section of the chat spec.
     internal enum ErrorCode: Int {
-        /// The user attempted to perform an invalid action.
         case badRequest = 40000
-
-        /**
-         * Cannot perform operation because the room is in a failed state.
-         */
-        case roomInFailedState = 102_101
-
-        /**
-         * Cannot perform operation because the room is in a releasing state.
-         */
-        case roomIsReleasing = 102_102
-
-        /**
-         * Cannot perform operation because the room is in a released state.
-         */
-        case roomIsReleased = 102_103
-
-        /**
-         * Room was released before the operation could complete.
-         */
-        case roomReleasedBeforeOperationCompleted = 102_106
-
-        case roomInInvalidState = 102_107
-
-        /**
-         * The room has experienced a discontinuity.
-         */
+        case invalidArgument = 40003
         case roomDiscontinuity = 102_100
+        case roomReleasedBeforeOperationCompleted = 102_106
+        case roomInInvalidState = 102_112
 
         /// Has a case for each of the ``ErrorCode`` cases that imply a fixed status code.
         internal enum CaseThatImpliesFixedStatusCode {
             case badRequest
+            case invalidArgument
+            case roomInInvalidState
             case roomInFailedState
             case roomIsReleasing
             case roomIsReleased
@@ -125,6 +105,10 @@ internal enum InternalError {
                 switch self {
                 case .badRequest:
                     .badRequest
+                case .invalidArgument:
+                    .invalidArgument
+                case .roomInInvalidState:
+                    .roomInInvalidState
                 case .roomInFailedState:
                     .roomInFailedState
                 case .roomIsReleasing:
@@ -140,9 +124,11 @@ internal enum InternalError {
 
             /// The ``ErrorInfo/statusCode`` that should be returned for this error.
             internal var statusCode: Int {
-                // These status codes are taken from the "Chat-specific Error Codes" section of the spec.
+                /// These status codes are taken from the "Commmon Error Codes used by Chat" and "Chat-specific Error Codes" sections of the chat spec.
                 switch self {
                 case .badRequest,
+                     .invalidArgument,
+                     .roomInInvalidState,
                      .roomInFailedState,
                      .roomIsReleasing,
                      .roomIsReleased,
@@ -156,6 +142,7 @@ internal enum InternalError {
 
         /// Has a case for each of the ``ErrorCode`` cases that do not imply a fixed status code.
         internal enum CaseThatImpliesVariableStatusCode {
+            // TODO this should just be 400 always per spec now, but we still have some old spec points. Then we can get rid of this
             case roomInInvalidState
 
             internal var toNumericErrorCode: ErrorCode {
@@ -204,8 +191,6 @@ internal enum InternalError {
             .fixedStatusCode(.roomInInvalidState)
         case .roomInInvalidStateForDetach:
             .fixedStatusCode(.roomInInvalidState)
-        case .cannotApplyCreatedMessageEvent:
-            .fixedStatusCode(.invalidArgument)
         case .cannotApplyMessageEventForDifferentMessage:
             .fixedStatusCode(.invalidArgument)
         case .cannotApplyReactionSummaryEventForDifferentMessage:
