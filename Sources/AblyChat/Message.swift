@@ -243,12 +243,12 @@ public extension Message {
      * - Returns: A new message instance with the event applied, or the original message if the event is older.
      */
     func with(_ messageEvent: ChatMessageEvent) throws(ErrorInfo) -> Self {
-        // (CHA-M11a) When the method receives a MessageEvent of type created, it must throw an ErrorInfo with code 40000 and status code 400.
+        // (CHA-M11h) When the method receives a MessageEvent of type created, it must throw an ErrorInfo with code 40003 and status code 400.
         if messageEvent.type == .created {
             throw InternalError.cannotApplyCreatedMessageEvent.toErrorInfo()
         }
 
-        // (CHA-M11b) For MessageEvent the method must verify that the message.serial in the event matches the message's own serial. If they don't match, an error with code 40000 and status code 400 must be thrown.
+        // (CHA-M11i) For MessageEvent the method must verify that the message.serial in the event matches the message's own serial. If they don't match, an error with code 40003 and status code 400 must be thrown.
         guard serial == messageEvent.message.serial else {
             throw InternalError.cannotApplyEventForDifferentMessage.toErrorInfo()
         }

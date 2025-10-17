@@ -12,15 +12,23 @@ internal enum InternalError {
 
     /// Not proceeding with `Room.attach()` because the room has the following invalid status, per CHA-RL1l.
     ///
-    /// Error code is `RoomInInvalidState`.
+    /// Error code is `roomInInvalidState`.
     case roomInInvalidStateForAttach(RoomStatus)
 
     /// Not proceeding with `Room.detach()` because the room has the following invalid status, per CHA-RL2l or CHA-RL2m.
     ///
-    /// Error code is `RoomInInvalidState`.
+    /// Error code is `roomInInvalidState`.
     case roomInInvalidStateForDetach(RoomStatus)
 
+    /// Attempted to apply a `MessageEvent.created` event to a `Message`, which is not allowed per CHA-M11h.
+    ///
+    /// Error code is 40003 and status code 400.
+    case cannotApplyCreatedMessageEvent
 
+    /// Attempted to apply a `MessageEvent` event to a `Message` whose `serial` doesn't match the `messageSerial` of the event, which is not allowed per CHA-M11i.
+    ///
+    /// Error code is 40003 and status code 400.
+    case cannotApplyMessageEventForDifferentMessage
 
     // Old ones
 
@@ -33,8 +41,6 @@ internal enum InternalError {
     case roomTransitionedToInvalidStateForPresenceOperation(cause: ErrorInfo?)
     case roomDiscontinuity(cause: ErrorInfo?)
     case unableDeleteReactionWithoutName(reactionType: String)
-    case cannotApplyEventForDifferentMessage
-    case cannotApplyCreatedMessageEvent
     case attachSerialIsNotDefined
     case channelFailedToAttach(cause: ErrorInfo?)
 
@@ -195,7 +201,8 @@ internal enum InternalError {
         case .cannotApplyEventForDifferentMessage:
             .fixedStatusCode(.badRequest)
         case .cannotApplyCreatedMessageEvent:
-            .fixedStatusCode(.badRequest)
+            // TODO update
+                .fixedStatusCode(.badRequest)
         case .attachSerialIsNotDefined:
             .fixedStatusCode(.badRequest)
         case .channelFailedToAttach:

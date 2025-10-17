@@ -6,7 +6,7 @@ import Testing
 struct MessageTests {
     // MARK: - CHA-M11 (with message event)
 
-    // @spec CHA-M11a - Created events must throw an error
+    // @spec CHA-M11h - Created events must throw an error
     @Test
     func withChatMessageEventCreatedThrowsError() throws {
         // Given: An original message
@@ -56,11 +56,11 @@ struct MessageTests {
             #expect(Bool(false), "Should have thrown an error")
         } catch {
             #expect(error.statusCode == 400)
-            #expect(error.code == 40000)
+            #expect(error.code == 40003)
         }
     }
 
-    // @spec CHA-M11b - Error case: Event for a different message
+    // @spec CHA-M11i - Error case: Event for a different message
     @Test
     func withChatMessageEventThrowsForDifferentMessage() throws {
         // Given: An original message
@@ -109,7 +109,7 @@ struct MessageTests {
             #expect(Bool(false), "Should have thrown an error")
         } catch {
             #expect(error.statusCode == 400)
-            #expect(error.code == 40000)
+            #expect(error.code == 40003)
         }
     }
 
