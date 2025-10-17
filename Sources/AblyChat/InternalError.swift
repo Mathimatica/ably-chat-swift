@@ -6,9 +6,8 @@ import Ably
 ///
 /// This type does not conform to `Error` and cannot be thrown directly. It serves as the backing storage for ``ErrorInfo``, which is the actual error type thrown by the SDK.
 internal enum InternalError {
+    // TODO document and do something useful with this
     case other(Other)
-
-    // New ones
 
     /// Not proceeding with `Room.attach()` because the room has the following invalid status, per CHA-RL1l.
     ///
@@ -19,6 +18,8 @@ internal enum InternalError {
     ///
     /// Error code is `roomInInvalidState`.
     case roomInInvalidStateForDetach(RoomStatus)
+
+    // TODO update these to refer to InvalidArgument once spec does.
 
     /// Attempted to apply a `MessageEvent.created` event to a `Message`, which is not allowed per CHA-M11h.
     ///
@@ -45,23 +46,24 @@ internal enum InternalError {
     /// Error code is 40003 and status code (TODO spec doesn't say).
     case deleteMessageReactionEmptyMessageSerial
 
-    // Old ones: TODO document
-
     // TODO document
     case inconsistentRoomOptions(requested: RoomOptions, existing: RoomOptions)
     // TODO document, this one is no longer specified because we never finished single-channel stuff
     case roomIsReleasing
     // TODO document
     case roomReleasedBeforeOperationCompleted
+    // TODO document
     case presenceOperationRequiresRoomAttach(feature: RoomFeature)
+    // TODO document
     case roomTransitionedToInvalidStateForPresenceOperation(cause: ErrorInfo?)
+    // TODO document
     case roomDiscontinuity(cause: ErrorInfo?)
+    // TODO document
     case unableDeleteReactionWithoutName(reactionType: String)
+    // TODO document
     case attachSerialIsNotDefined
+    // TODO document
     case channelFailedToAttach(cause: ErrorInfo?)
-
-    // Irrelevant ones: TODO document
-
 
     /// Returns the error that this should be converted to when exposed via the SDK's public API.
     internal func toErrorInfo() -> ErrorInfo {
@@ -77,6 +79,7 @@ internal enum InternalError {
         case messagesError(DefaultMessages.MessagesError)
     }
 
+    // TODO check all these once we've done the internal ones
     /// The ```ErrorInfo/code`` values used by `InternalError` cases.
     internal enum ErrorCode: Int {
         /// The user attempted to perform an invalid action.
@@ -197,14 +200,24 @@ internal enum InternalError {
         case .other:
             // For now we just treat all miscellaneous internally-thrown errors as non-recoverable user errors
             .fixedStatusCode(.badRequest)
+        case .roomInInvalidStateForAttach:
+            .fixedStatusCode(.roomInInvalidState)
+        case .roomInInvalidStateForDetach:
+            .fixedStatusCode(.roomInInvalidState)
+        case .cannotApplyCreatedMessageEvent:
+            .fixedStatusCode(.invalidArgument)
+        case .cannotApplyMessageEventForDifferentMessage:
+            .fixedStatusCode(.invalidArgument)
+        case .cannotApplyReactionSummaryEventForDifferentMessage:
+            .fixedStatusCode(.invalidArgument)
+        case .sendMessageReactionEmptyMessageSerial:
+            .fixedStatusCode(.invalidArgument)
+        case .deleteMessageReactionEmptyMessageSerial:
+            .fixedStatusCode(.invalidArgument)
         case .inconsistentRoomOptions:
             .fixedStatusCode(.badRequest)
-        case .roomInFailedState:
-            .fixedStatusCode(.roomInFailedState)
         case .roomIsReleasing:
             .fixedStatusCode(.roomIsReleasing)
-        case .roomIsReleased:
-            .fixedStatusCode(.roomIsReleased)
         case .roomReleasedBeforeOperationCompleted:
             .fixedStatusCode(.roomReleasedBeforeOperationCompleted)
         case .roomTransitionedToInvalidStateForPresenceOperation:
@@ -217,11 +230,8 @@ internal enum InternalError {
             .fixedStatusCode(.roomDiscontinuity)
         case .unableDeleteReactionWithoutName:
             .fixedStatusCode(.badRequest)
-        case .cannotApplyEventForDifferentMessage:
-            .fixedStatusCode(.badRequest)
         case .cannotApplyCreatedMessageEvent:
-            // TODO update
-                .fixedStatusCode(.badRequest)
+            .fixedStatusCode(.invalidArgument)
         case .attachSerialIsNotDefined:
             .fixedStatusCode(.badRequest)
         case .channelFailedToAttach:
@@ -258,12 +268,8 @@ internal enum InternalError {
             "\(otherInternalError)"
         case let .inconsistentRoomOptions(requested, existing):
             "Rooms.get(roomName:options:) was called with a different set of room options than was used on a previous call. You must first release the existing room instance using Rooms.release(roomName:). Requested options: \(requested), existing options: \(existing)"
-        case .roomInFailedState:
-            "Cannot perform operation because the room is in a failed state."
         case .roomIsReleasing:
             "Cannot perform operation because the room is in a releasing state."
-        case .roomIsReleased:
-            "Cannot perform operation because the room is in a released state."
         case .roomReleasedBeforeOperationCompleted:
             "Room was released before the operation could complete."
         case let .presenceOperationRequiresRoomAttach(feature):
@@ -274,8 +280,6 @@ internal enum InternalError {
             "The room has experienced a discontinuity."
         case let .unableDeleteReactionWithoutName(reactionType: reactionType):
             "Cannot delete reaction of type '\(reactionType)' without a reaction name."
-        case .cannotApplyEventForDifferentMessage:
-            "Cannot apply event for different message."
         case .cannotApplyCreatedMessageEvent:
             "Cannot apply created message event."
         case .attachSerialIsNotDefined:
@@ -296,12 +300,9 @@ internal enum InternalError {
             cause
         case .other,
              .inconsistentRoomOptions,
-             .roomInFailedState,
              .roomIsReleasing,
-             .roomIsReleased,
              .roomReleasedBeforeOperationCompleted,
              .presenceOperationRequiresRoomAttach,
-             .cannotApplyEventForDifferentMessage,
              .cannotApplyCreatedMessageEvent,
              .unableDeleteReactionWithoutName,
              .attachSerialIsNotDefined:
